@@ -21,8 +21,12 @@ See the following URLs for more info:
         <string>en-US</string>
         <key>NAME</key>
         <string>Firefox</string>
+        <key>OS</key>
+        <string>osx</string>
+        <key>EXT</key>
+        <string>dmg</string>
         <key>DISABLE_CODE_SIGNATURE_VERIFICATION</key>
-        <false />
+        <false/>
     </dict>
     <key>MinimumVersion</key>
     <string>0.4.1</string>
@@ -37,6 +41,8 @@ See the following URLs for more info:
                 <string>%RELEASE%</string>
                 <key>locale</key>
                 <string>%LOCALE%</string>
+                <key>os</key>
+                <string>%OS%</string>
             </dict>
             <key>Processor</key>
             <string>MozillaURLProvider</string>
@@ -45,7 +51,7 @@ See the following URLs for more info:
             <key>Arguments</key>
             <dict>
                 <key>filename</key>
-                <string>%NAME%.dmg</string>
+                <string>%NAME%.%EXT%</string>
             </dict>
             <key>Processor</key>
             <string>URLDownloader</string>
