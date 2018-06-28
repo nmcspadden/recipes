@@ -21,7 +21,7 @@ from autopkglib import Processor, ProcessorError
 __all__ = ["MozillaURLProvider"]
 
 
-MOZ_BASE_URL = "https://download.mozilla.org/?product=%s-%s&os=%s&lang=%s"
+MOZ_BASE_URL = "https://download.mozilla.org/?product=%s-%s&os=osx&lang=%s"
 
 # As of 16 Nov 2015 here are the supported products:
 # firefox-latest
@@ -29,7 +29,7 @@ MOZ_BASE_URL = "https://download.mozilla.org/?product=%s-%s&os=%s&lang=%s"
 # firefox-beta-latest
 # thunderbird-latest
 # thunderbird-beta-latest
-#
+# 
 # See also:
 #    http://ftp.mozilla.org/pub/firefox/releases/latest/README.txt
 #    http://ftp.mozilla.org/pub/firefox/releases/latest-esr/README.txt
@@ -60,12 +60,6 @@ class MozillaURLProvider(Processor):
             "description":
                 "Which localization to download, default is 'en-US'.",
         },
-        "os": {
-            "required": False,
-            "default": 'osx',
-            "description":
-                "Which operating system to download for, default is 'osx'.",
-        },
         "base_url": {
             "required": False,
             "description": "Default is '%s." % MOZ_BASE_URL,
@@ -77,12 +71,12 @@ class MozillaURLProvider(Processor):
         },
     }
 
-    def get_mozilla_dmg_url(self, base_url, product_name, release, os, locale):
+    def get_mozilla_dmg_url(self, base_url, product_name, release, locale):
         """Assemble download URL for Mozilla product"""
         #pylint: disable=no-self-use
         # Allow locale as both en-US and en_US.
         locale = locale.replace("_", "-")
-
+        
         # fix releases into new format
         if release == 'latest-esr':
             release = 'esr-latest'
@@ -90,7 +84,7 @@ class MozillaURLProvider(Processor):
             release = 'beta-latest'
 
         # Construct download URL.
-        return base_url % (product_name, release, os, locale)
+        return base_url % (product_name, release, locale)
 
     def main(self):
         """Provide a Mozilla download URL"""
@@ -99,13 +93,13 @@ class MozillaURLProvider(Processor):
         release = self.env.get("release", "latest")
         locale = self.env.get("locale", "en-US")
         base_url = self.env.get("base_url", MOZ_BASE_URL)
-        os = self.env.get("os", "osx")
 
         self.env["url"] = self.get_mozilla_dmg_url(
-            base_url, product_name, release, os, locale)
+            base_url, product_name, release, locale)
         self.output("Found URL %s" % self.env["url"])
 
 
 if __name__ == "__main__":
     PROCESSOR = MozillaURLProvider()
     PROCESSOR.execute_shell()
+
